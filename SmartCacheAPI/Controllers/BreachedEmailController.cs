@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SmartCacheAPI.Services;
-using SmartCacheAPI.Models;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SmartCacheAPI.Helpers;
+using SmartCacheAPI.Models;
+using SmartCacheAPI.Services;
 
-namespace SmartCacheAPI.Controllers
+namespace SmartCacheApi.Controllers
 {
     [ApiController]
     [Route("api/breaches")]
@@ -18,6 +19,7 @@ namespace SmartCacheAPI.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         [HttpGet("{email}")]
         public async Task<IActionResult> IsEmailBreachedAsync(string email)
         {
@@ -42,25 +44,26 @@ namespace SmartCacheAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> MarkAsBreachedAsync([FromBody] BreachedEmail breach)
+        public async Task<IActionResult> MarkAsBreachedAsync(string email)
         {
             try
             {
-                if (!EmailValidator.IsValidEmail(breach.Email))
+                if (!EmailValidator.IsValidEmail(email))
                     return BadRequest("Invalid email format.");
 
-                bool success = await _emailBreachService.MarkAsBreachedAsync(breach);
+                bool success = await _emailBreachService.MarkAsBreachedAsync(email);
                 return success ? Created() : Conflict("Email already exists in breach list");
             }
             catch (OrleansException ex)
             {
-                _logger.LogWarning(ex, "Orleans error while marking email as breached: {Email}", breach.Email);
+                _logger.LogWarning(ex, "Orleans error while marking email as breached: {Email}", email);
                 return StatusCode(503, "Service unavailable, please try again later.");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Unexpected error while marking email as breached: {Email}", breach.Email);
+                _logger.LogError(ex, "Unexpected error while marking email as breached: {Email}", email);
                 return StatusCode(500, "An unexpected error occurred.");
             }
         }

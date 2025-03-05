@@ -28,18 +28,20 @@ namespace SmartCacheAPI.Services
             }
         }
 
-        public async Task<bool> MarkAsBreachedAsync(BreachedEmail breach)
+        public async Task<bool> MarkAsBreachedAsync(string email)
         {
             try
             {
-                var grain = _orleansClient.GetGrain<IBreachedEmailGrain>(breach.Email);
+                var grain = _orleansClient.GetGrain<IBreachedEmailGrain>(email);
                 if (await grain.IsBreachedAsync())
                 {
-                    _logger.LogInformation("Email {Email} is already marked as breached", breach.Email);
+                    _logger.LogInformation("Email {Email} is already marked as breached", email);
                     return false;
                 }
 
+                var breach = new BreachedEmail { Email = email };
                 breach.BreachDate = DateTime.UtcNow;
+                
                 await grain.MarkAsBreachedAsync(breach);
                 _logger.LogInformation("Email {Email} successfully marked as breached", breach.Email);
 
@@ -47,7 +49,7 @@ namespace SmartCacheAPI.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error marking email {Email} as breached", breach.Email);
+                _logger.LogError(ex, "Error marking email {Email} as breached", email);
                 return false;
             }
         }
