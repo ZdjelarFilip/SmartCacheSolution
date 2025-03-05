@@ -1,7 +1,7 @@
 ﻿using SmartCacheAPI.Grains;
 using SmartCacheAPI.Models;
 
-namespace SmartCacheApi.Services
+namespace SmartCacheAPI.Services
 {
     public class EmailBreachService
     {
