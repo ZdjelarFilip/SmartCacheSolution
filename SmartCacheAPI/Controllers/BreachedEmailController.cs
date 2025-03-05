@@ -19,7 +19,6 @@ namespace SmartCacheAPI.Controllers
             _logger = logger;
         }
 
-        [Authorize]
         [HttpGet("{email}")]
         public async Task<IActionResult> IsEmailBreachedAsync(string email)
         {
@@ -44,7 +43,6 @@ namespace SmartCacheAPI.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> MarkAsBreachedAsync([FromBody] BreachedEmail breach)
         {

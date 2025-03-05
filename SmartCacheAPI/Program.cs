@@ -1,4 +1,7 @@
 using Orleans.Configuration;
+using SmartCacheAPI.Repositories;
+using SmartCacheAPI.Services;
+using SmartCacheAPI.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
@@ -32,6 +35,11 @@ builder.Host.UseOrleans(siloBuilder =>
         })
         .UseInMemoryReminderService();
 });
+
+// Register Services and Controllers
+builder.Services.AddSingleton<IBreachedEmailStorage, AzureBreachedEmailStorage>();
+builder.Services.AddScoped<EmailBreachService>();
+builder.Services.Configure<AzureSettings>(configuration.GetSection("AzureStorage"));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
