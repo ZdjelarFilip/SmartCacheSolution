@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SmartCacheAPI.Services;
-using SmartCacheAPI.Models;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SmartCacheAPI.Helpers;
+using SmartCacheAPI.Models;
+using SmartCacheAPI.Services;
 
-namespace SmartCacheAPI.Controllers
+namespace SmartCacheApi.Controllers
 {
     [ApiController]
     [Route("api/breaches")]
@@ -18,6 +19,7 @@ namespace SmartCacheAPI.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         [HttpGet("{email}")]
         public async Task<IActionResult> IsEmailBreachedAsync(string email)
         {
@@ -42,6 +44,7 @@ namespace SmartCacheAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> MarkAsBreachedAsync([FromBody] BreachedEmail breach)
         {
