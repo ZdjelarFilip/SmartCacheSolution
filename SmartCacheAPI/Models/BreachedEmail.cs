@@ -8,6 +8,6 @@
         public required string Email { get; set; }
 
         [Id(1)]
-        public DateTime BreachDate { get; set; }
+        public DateTime? BreachDate { get; set; }
     }
 }
