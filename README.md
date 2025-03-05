@@ -59,7 +59,7 @@ dotnet restore
 dotnet build
 dotnet run
 ```
-The API will be accessible at `http://localhost:5117` (Swagger UI included).
+The API will be accessible at `http://localhost:5147` (Swagger UI included).
 
 ## API Endpoints
 ### **Authentication**
