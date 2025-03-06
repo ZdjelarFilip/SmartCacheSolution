@@ -49,12 +49,12 @@ SmartCache API is a high-performance backend service designed for breach email t
 
 ### **Installation**
 ```sh
-git clone https://github.com/ZdjelarFilip/SmartCache
+git clone https://github.com/ZdjelarFilip/SmartCacheSolution
 cd SmartCache
 dotnet restore
 ```
 
-### **Running Locally**
+### **Running Locally** - Before running you should update appsettings.json / appsettings.Development.json in the SmartCacheAPI/TraditionalAPI project - credentials are provided in Bitwarden Vault in email.
 ```sh
 dotnet build
 dotnet run
@@ -87,16 +87,26 @@ The API will be accessible at `http://localhost:5147` (Swagger UI included).
 
 ## Testing
 - Uses xUnit and Moq for unit testing.
-- Test coverage includes EmailBreachService, EmailBreachController and EmailHelper.
+- Unit test coverage includes EmailBreachService, EmailBreachController, EmailHelper
+- Integration test covers GET&POST EmailBreach functionalities
 
 ![Tests](https://i.imgur.com/1dX9Ajs.png)
 
 
 ## Performance Against Traditional API
 
-In this project, we also implemented a Traditional API that uses EF Migrations and SQL Server (hosted in Azure). To evaluate its performance, we conducted load tests using Apache JMeter, ensuring all data was deleted before each test run.
+In this project, we also implemented a Traditional API that uses EF Migrations and SQL Server (hosted in Azure). 
+When the project is built and running the APIs are accessible at `http://localhost:5189` (Swagger UI included).
 
-The script for running the load test in Apache JMeter can be found inside the /LoadTesting/ folder.
+To evaluate its performance, we conducted load tests using Apache JMeter, ensuring all data was deleted before each test run.
+
+The body of the script for running the load test in Apache JMeter:
+
+```
+{
+  "email": "user${__Random(1,1000000)}@example.com"
+}
+```
 
 We then compared its performance against SmartCache API and reached the following conclusion:
 
