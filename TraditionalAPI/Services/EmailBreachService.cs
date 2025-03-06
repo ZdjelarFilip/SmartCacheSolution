@@ -1,4 +1,5 @@
-﻿using TraditionalAPI.Models;
+﻿using TraditionalAPI.Dto;
+using TraditionalAPI.Models;
 using TraditionalAPI.Repositories;
 
 namespace TraditionalAPI.Services
@@ -17,15 +18,20 @@ namespace TraditionalAPI.Services
             return await _breachedEmailStorage.ExistsAsync(email);
         }
 
-        public async Task<bool> MarkAsBreachedAsync(BreachedEmail breach)
+        public async Task<bool> MarkAsBreachedAsync(string email)
         {
-            if (await _breachedEmailStorage.ExistsAsync(breach.Email))
+            if (await _breachedEmailStorage.ExistsAsync(email))
             {
                 return false; // Email already exists
             }
 
-            breach.BreachDate = DateTime.UtcNow;
-            await _breachedEmailStorage.AddAsync(breach);
+            var newBreach = new BreachedEmail
+            {
+                Email = email,
+                BreachDate = DateTime.UtcNow
+            };
+
+            await _breachedEmailStorage.AddAsync(newBreach);
 
             return true;
         }

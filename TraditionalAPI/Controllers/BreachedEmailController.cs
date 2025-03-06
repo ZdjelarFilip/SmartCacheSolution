@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TraditionalAPI.Helpers;
-using TraditionalAPI.Models;
 using TraditionalAPI.Services;
 
 namespace TraditionalAPI.Controllers
@@ -37,19 +36,19 @@ namespace TraditionalAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> MarkAsBreachedAsync([FromBody] BreachedEmail breach)
+        public async Task<IActionResult> MarkAsBreachedAsync(string email)
         {
             try
             {
-                if (!EmailValidator.IsValidEmail(breach.Email))
+                if (!EmailValidator.IsValidEmail(email))
                     return BadRequest("Invalid email format.");
 
-                bool success = await _emailBreachService.MarkAsBreachedAsync(breach);
+                bool success = await _emailBreachService.MarkAsBreachedAsync(email);
                 return success ? Created() : Conflict("Email already exists in breach list");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Unexpected error while marking email as breached: {Email}", breach.Email);
+                _logger.LogError(ex, "Unexpected error while marking email as breached: {Email}", email);
                 return StatusCode(500, "An unexpected error occurred.");
             }
         }
