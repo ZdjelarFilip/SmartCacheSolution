@@ -1,10 +1,10 @@
 ﻿using Moq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SmartCacheAPI.Controllers;
 using SmartCacheAPI.Grains;
 using SmartCacheAPI.Models;
 using SmartCacheAPI.Services;
+using SmartCacheAPI.Controllers;
 
 namespace SmartCacheAPI.Tests
 {
@@ -55,8 +55,7 @@ namespace SmartCacheAPI.Tests
             _breachedEmailGrainMock.Setup(g => g.IsBreachedAsync()).ReturnsAsync(false);
             _breachedEmailGrainMock.Setup(g => g.MarkAsBreachedAsync(It.IsAny<BreachedEmail>())).Returns(Task.CompletedTask);
 
-            var breach = new BreachedEmail { Email = "test@example.com" };
-            var result = await _controller.MarkAsBreachedAsync(breach);
+            var result = await _controller.MarkAsBreachedAsync("test@example.com");
             Assert.IsType<CreatedResult>(result);
         }
 
@@ -65,8 +64,7 @@ namespace SmartCacheAPI.Tests
         {
             _breachedEmailGrainMock.Setup(g => g.IsBreachedAsync()).ReturnsAsync(true);
 
-            var breach = new BreachedEmail { Email = "test@example.com" };
-            var result = await _controller.MarkAsBreachedAsync(breach);
+            var result = await _controller.MarkAsBreachedAsync("test@example.com");
             Assert.IsType<ConflictObjectResult>(result);
         }
     }

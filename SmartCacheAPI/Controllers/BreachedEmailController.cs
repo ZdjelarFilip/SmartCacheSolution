@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartCacheAPI.Helpers;
-using SmartCacheAPI.Models;
 using SmartCacheAPI.Services;
 
-namespace SmartCacheApi.Controllers
+namespace SmartCacheAPI.Controllers
 {
     [ApiController]
     [Route("api/breaches")]

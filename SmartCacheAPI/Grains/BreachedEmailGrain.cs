@@ -1,7 +1,7 @@
 ﻿using SmartCacheAPI.Grains;
 using SmartCacheAPI.Models;
 
-namespace SmartCacheApi.Grains
+namespace SmartCacheAPI.Grains
 {
     public class BreachedEmailGrain : Grain, IBreachedEmailGrain, IRemindable
     {

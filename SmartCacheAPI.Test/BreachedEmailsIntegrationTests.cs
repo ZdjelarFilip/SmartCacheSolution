@@ -1,12 +1,10 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Text.Json;
 using System.Net;
 using System.Net.Http.Headers;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Mvc.Testing;
-using SmartCacheAPI.Models;
 
 namespace SmartCacheAPI.Tests
 {
@@ -53,19 +51,13 @@ namespace SmartCacheAPI.Tests
         [Fact]
         public async Task PostEmail_AddsEmailToBreachList()
         {
-            var breach = new BreachedEmail
-            {
-                Email = $"breached-{Guid.NewGuid()}@example.com"
-            };
-            var content = new StringContent(JsonSerializer.Serialize(breach), Encoding.UTF8, "application/json");
+            var email = $"breached.{Guid.NewGuid()}@example.com";
 
-            var request = new HttpRequestMessage(HttpMethod.Post, "/api/breaches")
-            {
-                Content = content
-            };
+            var request = new HttpRequestMessage(HttpMethod.Post, $"/api/breaches?email={email}");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _jwtToken);
 
             var response = await _client.SendAsync(request);
+
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
     }
