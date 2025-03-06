@@ -50,22 +50,32 @@ SmartCache API is a high-performance backend service designed for breach email t
 ### **Installation**
 ```sh
 git clone https://github.com/ZdjelarFilip/SmartCacheSolution
-cd SmartCache
+cd SmartCacheSolution
 dotnet restore
 ```
 
-### **Running Locally** - Before running you should update appsettings.json / appsettings.Development.json in the SmartCacheAPI/TraditionalAPI project - credentials are provided in Bitwarden Vault in email.
+### **Running** - Before running you should update appsettings.Development.json in the SmartCacheAPI/TraditionalAPI project - credentials are provided in Bitwarden Vault in email.
 ```sh
 dotnet build
+
+cd SmartCacheAPI
+dotnet run
+
+cd TraditionalAPI
 dotnet run
 ```
-The API will be accessible at `http://localhost:5147` (Swagger UI included).
+The API for SmartCacheAPI will be accessible at `http://localhost:5147` (Swagger UI included). <br>
+The API for TraditionalAPI will be accessible at `http://localhost:5189` (Swagger UI included).
 
 ## API Endpoints
 ### **Authentication**
 | Method | Endpoint | Description |
 |--------|------------|-------------|
-| `POST` | `/api/auth/login` | Authenticates user and returns JWT token |
+| `POST` | `/api/auth/login` | Authenticates user and returns JWT token. You should input this token in Authentication button in Swagger to access other APIs |
+
+Default Username: **Username** <br>
+Default Password: **Password** 
+
 
 ### **Breached Emails**
 | Method | Endpoint | Description |
@@ -96,7 +106,6 @@ The API will be accessible at `http://localhost:5147` (Swagger UI included).
 ## Performance Against Traditional API
 
 In this project, we also implemented a Traditional API that uses EF Migrations and SQL Server (hosted in Azure). 
-When the project is built and running the APIs are accessible at `http://localhost:5189` (Swagger UI included).
 
 To evaluate its performance, we conducted load tests using Apache JMeter, ensuring all data was deleted before each test run.
 
